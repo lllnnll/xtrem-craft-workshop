@@ -10,24 +10,31 @@ public final class Bank {
         this.exchangeRates = exchangeRates;
     }
 
-    public static Bank withExchangeRate(Currency currency1, Currency currency2, double rate) {
+    public static Bank withExchangeRate(Currency currencySource, Currency currencyTarget, double rate) {
         var bank = new Bank(new HashMap<>());
-        bank.addExchangeRate(currency1, currency2, rate);
+        bank.addExchangeRate(currencySource, currencyTarget, rate);
 
         return bank;
     }
 
-    public void addExchangeRate(Currency currency1, Currency currency2, double rate) {
-        exchangeRates.put(currency1 + "->" + currency2, rate);
+    public void addExchangeRate(Currency currencySource, Currency currencyTarget, double rate) throws SameCurrencyException {
+        if(!(currencySource == currencyTarget)){
+            throw new SameCurrencyException(currencySource,currencyTarget);
+        }
+        exchangeRates.put(currencySource + "->" + currencyTarget, rate);
     }
 
-    public double convert(double amount, Currency currency1, Currency currency2) throws MissingExchangeRateException {
-        if (!(currency1 == currency2 || exchangeRates.containsKey(currency1 + "->" + currency2))) {
-            throw new MissingExchangeRateException(currency1, currency2);
+    public double convert(double amount, Currency currencySource, Currency currencyTarget) throws MissingExchangeRateException {
+        if (!(currencySource == currencyTarget || exchangeRates.containsKey(currencySource + "->" + currencyTarget))) {
+            throw new MissingExchangeRateException(currencySource, currencyTarget);
         }
-        return currency1 == currency2
+        return currencySource == currencyTarget
                 ? amount
-                : amount * exchangeRates.get(currency1 + "->" + currency2);
+                : amount * exchangeRates.get(currencySource + "->" + currencyTarget);
+    }
+
+    private boolean canConvert(Currency currencySource, Currency currencyTarget){
+        return !(currencySource == currencyTarget || exchangeRates.containsKey(currencySource + "->" + currencyTarget));
     }
 
 }
