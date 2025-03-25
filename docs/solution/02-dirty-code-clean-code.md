@@ -20,6 +20,12 @@
 
 - 9. Pas de validation des inputs
 
+Un marécage où on se perd
+Du code spaghetti
+Du code sans structure
+Du code dupliqué
+Un patchwork
+
 ## Qu'est-ce que du code propre ?
 
 - 1. Nom explicite, pas de type du meme nom que la variable (Currency : currency1)
@@ -41,3 +47,9 @@
 - 9. Typage des inputs 
 
 - Convertion du language utilisé
+
+Lisible : se lit comme une phrase
+Elégant : assez simple et direct
+Facile à modifier: peut etre modifié par un autre que son auteur
+Ecrit avec soin : Aucun probleme évident ne saute aux yeux
+Sans surprise : Le corps des méthodes est ce qu'on avait deviné
