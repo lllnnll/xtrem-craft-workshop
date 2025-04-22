@@ -26,11 +26,6 @@
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>1.19.1</version>
-                <configuration>
-                    <targetTests>
-                        <param>money_problem.domain</param>
-                    </targetTests>
-                </configuration>
             </plugin>
         </plugins>
     </build>

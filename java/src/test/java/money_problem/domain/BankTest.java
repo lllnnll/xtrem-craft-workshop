@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static money_problem.domain.Currency.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class BankTest {
 
@@ -44,7 +45,6 @@ class BankTest {
         // Arrange
         Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
         Bank bank2 = Bank.withExchangeRate(EUR, USD, 1.3);
-
         // Act
         double convert = bank.convert(10, EUR, USD);
         double convert2 = bank2.convert(10, EUR, USD);
@@ -53,5 +53,17 @@ class BankTest {
                 .isEqualTo(12);
         assertThat(convert2)
                 .isEqualTo(13);
+        //assertFalse(convert_negative);
+    }
+
+    @Test
+    void convert_with_same_currency() throws SameCurrencyException, MissingExchangeRateException {
+        // Arrange
+        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
+        // Assert
+        ThrowableAssert.ThrowingCallable action = () -> bank.addExchangeRate(EUR, EUR, 0.8);;
+        assertThatThrownBy(action)
+                .isInstanceOf(SameCurrencyException.class)
+                .hasMessage("EUR->EUR");
     }
 }
