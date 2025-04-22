@@ -1,7 +1,8 @@
 # Example Mapping
 
 ## Format de restitution
-*(rappel, pour chaque US)*
+
+_(rappel, pour chaque US)_
 
 ```markdown
 ## Titre de l'US (post-it jaunes)
@@ -15,10 +16,7 @@ Exemple: (post-it vert)
 - [ ] 5 USD + 10 EUR = 17 USD
 ```
 
-
 Vous pouvez également joindre une photo du résultat obtenu en utilisant les post-its.
-
-
 
 ## No exchange rate needed when all currencies aor evaluation are the same
 
@@ -35,7 +33,7 @@ When I evaluate the portfolio to the Bank in USD
 Then I should receive the evaluated 15 USD
 ```
 
-##Evaluation = sum of amouts in portfolio converted into target currency
+## Evaluation = sum of amouts in portfolio converted into target currency
 
 ```gherkin
 Given a portfolio containing 5 USD
