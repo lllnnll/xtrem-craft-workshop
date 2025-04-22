@@ -88,7 +88,7 @@ public class PortfolioTest {
     @Test
     void test_evaluate_portfolio_with_missing_exchange_rate() throws MissingExchangeRateException {
         Portfolio portfolio = new Portfolio();
-        portfolio.add(5, USD);
+        portfolio.add(5, EUR);
         portfolio.add(10, EUR);
         Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
         // assert

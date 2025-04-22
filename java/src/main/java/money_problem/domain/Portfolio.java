@@ -22,12 +22,7 @@ public class Portfolio {
         for(var amount : amounts.entrySet()) {
             Currency sourceCurrency = amount.getKey();
             double sourceAmount = amounts.get(sourceCurrency);
-            if (sourceCurrency != currency) {
-                total += bank.convert(sourceAmount, sourceCurrency, currency);
-            }
-            else {
-                total += sourceAmount;
-            }
+            total += bank.convert(sourceAmount, sourceCurrency, currency);
         }
         return total;
     }
