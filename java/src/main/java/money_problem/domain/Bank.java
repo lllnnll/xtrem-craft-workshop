@@ -18,14 +18,14 @@ public final class Bank {
     }
 
     public void addExchangeRate(Currency currencySource, Currency currencyTarget, double rate) throws SameCurrencyException {
-        if(!(currencySource == currencyTarget)){
+        if((currencySource == currencyTarget)){
             throw new SameCurrencyException(currencySource,currencyTarget);
         }
         exchangeRates.put(currencySource + "->" + currencyTarget, rate);
     }
 
     public double convert(double amount, Currency currencySource, Currency currencyTarget) throws MissingExchangeRateException {
-        if (!(currencySource == currencyTarget || exchangeRates.containsKey(currencySource + "->" + currencyTarget))) {
+        if (!canConvert(currencySource, currencyTarget)) {
             throw new MissingExchangeRateException(currencySource, currencyTarget);
         }
         return currencySource == currencyTarget
@@ -34,7 +34,7 @@ public final class Bank {
     }
 
     private boolean canConvert(Currency currencySource, Currency currencyTarget){
-        return !(currencySource == currencyTarget || exchangeRates.containsKey(currencySource + "->" + currencyTarget));
+        return (currencySource == currencyTarget || exchangeRates.containsKey(currencySource + "->" + currencyTarget));
     }
 
 }

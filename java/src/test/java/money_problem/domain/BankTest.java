@@ -1,5 +1,6 @@
 package money_problem.domain;
 
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 
 import static money_problem.domain.Currency.*;
@@ -29,21 +30,28 @@ class BankTest {
     }
 
     @Test
-    void convert_throws_exception_on_missing_exchange_rate() {
-        assertThatThrownBy(() -> {
-            Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
-            double convert = bank.convert(10, EUR, KRW);
-        })
+    void convert_throws_exception_on_missing_exchange_rate() throws MissingExchangeRateException {
+        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
+        // assert
+        ThrowableAssert.ThrowingCallable action = () -> bank.convert(10, EUR, KRW);
+        assertThatThrownBy(action)
                 .isInstanceOf(MissingExchangeRateException.class)
                 .hasMessage("EUR->KRW");
     }
 
     @Test
     void convert_with_different_exchange_rates_returns_different_floats() throws MissingExchangeRateException {
-        assertThat(Bank.withExchangeRate(EUR, USD, 1.2).convert(10, EUR, USD))
-                .isEqualTo(12);
+        // Arrange
+        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
+        Bank bank2 = Bank.withExchangeRate(EUR, USD, 1.3);
 
-        assertThat(Bank.withExchangeRate(EUR, USD, 1.3).convert(10, EUR, USD))
+        // Act
+        double convert = bank.convert(10, EUR, USD);
+        double convert2 = bank2.convert(10, EUR, USD);
+        // Assert
+        assertThat(convert)
+                .isEqualTo(12);
+        assertThat(convert2)
                 .isEqualTo(13);
     }
 }
