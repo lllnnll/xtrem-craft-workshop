@@ -14,6 +14,10 @@ on:
   pull_request:
     branches: [ "master" ]
 
+defaults:
+  run:
+    working-directory: ./java
+
 jobs:
   build:
 
@@ -28,8 +32,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      working-directory: ./java
-      run: mvn -B package --file java/pom.xml
+      run: mvn -B package --file pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
@@ -46,7 +49,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Test With Maven
-      working-directory: ./java
       run: mvn test
       
   mutationTests:
@@ -62,7 +64,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Test Only Mutation With Maven
-      working-directory: ./java
       run: mvn test-compile org.pitest:pitest-maven:mutationCoverage
     - name : Archive code coverage
       uses: actions/upload-artifact@v4
