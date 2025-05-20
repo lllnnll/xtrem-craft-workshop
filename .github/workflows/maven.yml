@@ -10,9 +10,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 defaults:
   run:
@@ -20,51 +20,65 @@ defaults:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
 
   allTests:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Test With Maven
-      run: mvn test
-      
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+      - name: Test With Maven
+        run: mvn test
+
   mutationTests:
     needs: allTests
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Test Only Mutation With Maven
-      run: mvn test-compile org.pitest:pitest-maven:mutationCoverage
-    - name : Archive code coverage
-      uses: actions/upload-artifact@v4
-      with:
-        name: code-coverage-report
-        path: java/target/pit-reports
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+      - name: Test Only Mutation With Maven
+        run: mvn test-compile org.pitest:pitest-maven:mutationCoverage
+      - name: Archive code coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: java/target/pit-reports
+
+  libYearTests:
+    needs: allTests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+      - name: Test Only LibYear With Maven
+        run: mvn io.github.mfoo:libyear-maven-plugin:analyze
