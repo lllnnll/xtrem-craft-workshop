@@ -17,7 +17,7 @@ public class Portfolio {
         }
     }
 
-    public double evaluate(Bank bank, Currency currency) throws MissingExchangeRateException {
+    public double old_evaluate(Bank bank, Currency currency) throws MissingExchangeRateException {
         double total = 0;
         for(var amount : amounts.entrySet()) {
             Currency sourceCurrency = amount.getKey();
@@ -26,6 +26,17 @@ public class Portfolio {
             total += bank.convert(sourceMoney, currency).amount();
         }
         return total;
+    }
+
+    public double evaluate(Bank bank, Currency currency) throws MissingExchangeRateException {
+        Money total = new Money(0, currency);
+        for(var amount : amounts.entrySet()) {
+            Currency sourceCurrency = amount.getKey();
+            double sourceAmount = amounts.get(sourceCurrency);
+            Money sourceMoney = new Money(sourceAmount, sourceCurrency);
+            total = new Money(bank.convert(sourceMoney, currency).amount() + total.amount(), currency);
+        }
+        return total.amount();
     }
 
     public void add(Money money) {
