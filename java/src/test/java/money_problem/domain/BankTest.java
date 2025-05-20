@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static money_problem.domain.Currency.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class BankTest {
@@ -65,5 +66,9 @@ class BankTest {
         assertThatThrownBy(action)
                 .isInstanceOf(SameCurrencyException.class)
                 .hasMessage("EUR->EUR");
+    }
+    @Test
+    void not_suppose_to_work_test(){
+        assertEquals(1,2);
     }
 }
