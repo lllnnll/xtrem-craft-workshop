@@ -35,6 +35,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
   allTests:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -49,7 +50,7 @@ jobs:
       run: mvn test
       
   mutationTests:
-  
+    needs: allTests
     runs-on: ubuntu-latest
 
     steps:
