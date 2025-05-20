@@ -37,4 +37,7 @@ public final class Bank {
         return (currencySource == currencyTarget || exchangeRates.containsKey(currencySource + "->" + currencyTarget));
     }
 
+    public Money convert(Money money, Currency currency) throws MissingExchangeRateException {
+        return new Money(this.convert(money.amount(), money.currency(), currency), currency);
+    }
 }

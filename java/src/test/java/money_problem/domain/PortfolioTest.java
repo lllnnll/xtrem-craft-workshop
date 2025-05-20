@@ -17,7 +17,7 @@ public class PortfolioTest {
     @Test
     void test_evaluate_portfolio() throws MissingExchangeRateException {
         Portfolio portfolio = new Portfolio();
-        portfolio.add(5, USD);
+        portfolio.add(new Money(5, USD));
         Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
         double value = portfolio.evaluate(bank, USD);
         assertThat(value)
@@ -33,14 +33,13 @@ public class PortfolioTest {
     @Test
     void test_evaluate_portfolio_with_multiple_usd() throws MissingExchangeRateException {
         Portfolio portfolio = new Portfolio();
-        portfolio.add(5, USD);
-        portfolio.add(10, USD);
+        portfolio.add(new Money(5,USD));
+        portfolio.add(new Money(10, USD));
         Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
         double value = portfolio.evaluate(bank, USD);
         assertThat(value)
                 .isEqualTo(15);
     }
-
     /*
     Given a portfolio containing 5 USD
     And 10 EUR
@@ -51,8 +50,8 @@ public class PortfolioTest {
     @Test
     void test_evaluate_portfolio_with_multiple_currencies() throws MissingExchangeRateException {
         Portfolio portfolio = new Portfolio();
-        portfolio.add(5, USD);
-        portfolio.add(10, EUR);
+        portfolio.add(new Money(5, USD));
+        portfolio.add(new Money(10, EUR));
         Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
         double value = portfolio.evaluate(bank, USD);
         assertThat(value)
@@ -69,8 +68,8 @@ public class PortfolioTest {
     @Test
     void test_evaluate_portfolio_with_multiple_currencies_and_different_exchange_rates() throws MissingExchangeRateException {
         Portfolio portfolio = new Portfolio();
-        portfolio.add(5, USD);
-        portfolio.add(10, EUR);
+        portfolio.add(new Money(5, USD));
+        portfolio.add(new Money(10, EUR));
         Bank bank = Bank.withExchangeRate(EUR, KRW, 1344);
         bank.addExchangeRate(USD, KRW, 1100);
         double value = portfolio.evaluate(bank, KRW);
@@ -88,8 +87,8 @@ public class PortfolioTest {
     @Test
     void test_evaluate_portfolio_with_missing_exchange_rate() throws MissingExchangeRateException {
         Portfolio portfolio = new Portfolio();
-        portfolio.add(5, EUR);
-        portfolio.add(10, EUR);
+        portfolio.add(new Money(5, EUR));
+        portfolio.add(new Money(10, EUR));
         Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
         // assert
         ThrowableAssert.ThrowingCallable action = () -> portfolio.evaluate(bank, KRW);
@@ -97,4 +96,6 @@ public class PortfolioTest {
                 .isInstanceOf(MissingExchangeRateException.class)
                 .hasMessage("EUR->KRW");
     }
+
+    //j'ai envie de mourir
 }

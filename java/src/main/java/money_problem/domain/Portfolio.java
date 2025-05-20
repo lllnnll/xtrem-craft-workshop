@@ -22,8 +22,13 @@ public class Portfolio {
         for(var amount : amounts.entrySet()) {
             Currency sourceCurrency = amount.getKey();
             double sourceAmount = amounts.get(sourceCurrency);
-            total += bank.convert(sourceAmount, sourceCurrency, currency);
+            Money sourceMoney = new Money(sourceAmount, sourceCurrency);
+            total += bank.convert(sourceMoney, currency).amount();
         }
         return total;
+    }
+
+    public void add(Money money) {
+        add(money.amount(), money.currency());
     }
 }
