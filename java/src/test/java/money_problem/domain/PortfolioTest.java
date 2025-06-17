@@ -18,7 +18,7 @@ public class PortfolioTest {
     void test_evaluate_portfolio() throws MissingExchangeRateException {
         Portfolio portfolio = new Portfolio();
         portfolio.add(new Money(5, USD));
-        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2, USD).build();
         Money value = portfolio.evaluate(bank, USD);
         assertThat(value.amount())
                 .isEqualTo(5);
@@ -35,7 +35,7 @@ public class PortfolioTest {
         Portfolio portfolio = new Portfolio();
         portfolio.add(new Money(5,USD));
         portfolio.add(new Money(10, USD));
-        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
         Money value = portfolio.evaluate(bank, USD);
         assertThat(value.amount())
                 .isEqualTo(15);
@@ -52,7 +52,7 @@ public class PortfolioTest {
         Portfolio portfolio = new Portfolio();
         portfolio.add(new Money(5, USD));
         portfolio.add(new Money(10, EUR));
-        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
         Money value = portfolio.evaluate(bank, USD);
         assertThat(value.amount())
                 .isEqualTo(17);
@@ -70,7 +70,7 @@ public class PortfolioTest {
         Portfolio portfolio = new Portfolio();
         portfolio.add(new Money(5, USD));
         portfolio.add(new Money(10, EUR));
-        Bank bank = Bank.withExchangeRate(EUR, KRW, 1344);
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1344,KRW).build();
         bank.addExchangeRate(USD, KRW, 1100);
         Money value = portfolio.evaluate(bank, KRW);
         assertThat(value.amount())
@@ -89,7 +89,7 @@ public class PortfolioTest {
         Portfolio portfolio = new Portfolio();
         portfolio.add(new Money(5, EUR));
         portfolio.add(new Money(10, EUR));
-        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
         // assert
         ThrowableAssert.ThrowingCallable action = () -> portfolio.evaluate(bank, KRW);
         assertThatThrownBy(action)
