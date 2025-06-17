@@ -1,10 +1,12 @@
 package money_problem.domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Portfolio {
     private Map<Currency, Double> amounts = new HashMap<>();
+    private ArrayList<Money> moneys = new ArrayList<>();
 
     public Portfolio() {}
 
@@ -15,6 +17,7 @@ public class Portfolio {
         }else{
             amounts.put(currency, amounts.get(currency) + amount);
         }
+        moneys.add(new Money(amount, currency));
     }
 
     public double old_evaluate(Bank bank, Currency currency) throws MissingExchangeRateException {
@@ -36,7 +39,13 @@ public class Portfolio {
             Money sourceMoney = new Money(sourceAmount, sourceCurrency);
             total = new Money(bank.convert(sourceMoney, currency).amount() + total.amount(), currency);
         }
-        return total.amount();
+        Money newTotal = new Money(0, currency);
+        for (Money money : moneys) {
+            if (money.currency() == currency) {
+                newTotal = new Money(money.amount() + newTotal.amount(), currency);
+            }
+        }
+        return newTotal.amount();
     }
 
     public void add(Money money) {
