@@ -48,7 +48,7 @@ When I convert to EUR
 Then I get 10 EUR
 ```
 
-### Bank can convert his pivot currency to the exchange rate
+### Bank can convert his pivot currency to the exchange rate by multiplying
 ```gherkin
 Given a bank with pivot currency EUR 
     And exhange rate to USD equals to 1.2 
@@ -57,7 +57,7 @@ When I convert my EUR to USD
 Then I get 12 USD
 ```
 
-### Bank can convert the exchange rate to his pivot currency
+### Bank can convert the exchange rate to his pivot currency by dividing
 ```gherkin
 Given a bank with pivot currency EUR 
     And exhange rate to USD equals to 1.2
@@ -66,7 +66,57 @@ When I convert my USD to EUR
 Then I get 10 USD
 ```
 
-### Bank can not convert the exchange rate to pivot currency not in the bank 
+### Bank can convert the exchange rate to his pivot currency then back to his exchange rate
+```gherkin
+Given a bank with pivot currency EUR 
+    And exhange rate to USD equals to 1.2
+    And 10 EUR
+When I convert my EUR to USD
+    AND I convert the result to EUR
+Then I get 10 EUR
+```
+
+### Bank can convert the exchangre rate but the client give less than the avergae amount
+```gherkin
+Given a bank with pivot currency EUR
+    And exhange rate to KRW equals to 1344
+    And a average amount of 1% of exchange rate that is 13,44 KRW
+    And 13,43 KRW
+When I convert my KRW to EUR
+Then I get Exception
+```
+
+### Bank can convert the exchangre rate but the client give more or equals than the avergae amount
+```gherkin
+Given a bank with pivot currency EUR
+    And exhange rate to KRW equals to 1344
+    And a average amount of 1% of exchange rate that is 13,44 KRW
+    And 13,45 KRW
+When I convert my KRW to EUR
+Then I get 0,01
+```
+
+### Bank can convert the exchange rate to his pivot currency and round the result to the inferior number
+```gherkin
+Given a bank with pivot currency KRW
+    And exhange rate to EUR equals to 0.00073
+    And 1248 KRW
+When I convert my KRW to EUR
+Then I get 0,91 EUR rounded of 0,91104 EUR
+```
+
+### Bank can convert the exchange rate to his exchange rate directly
+```gherkin
+Given a bank with pivot currency KRW
+    And exhange rate to EUR equals to 0,00073
+    And 1248 KRW
+When I convert my KRW to EUR
+    And I convert my EUR to KRW
+    And I take the original amount
+Then I get 1248 KRW
+```
+
+### Bank can not convert the exchange rate to pivot currency not in the bank
 ```gherkin
 Given a bank with pivot currency USD 
     And exhange rate to EUR equals to 0.82
