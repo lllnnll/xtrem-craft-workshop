@@ -96,6 +96,4 @@ public class PortfolioTest {
                 .isInstanceOf(MissingExchangeRateException.class)
                 .hasMessage("EUR->KRW");
     }
-
-    //j'ai envie de mourir
 }
