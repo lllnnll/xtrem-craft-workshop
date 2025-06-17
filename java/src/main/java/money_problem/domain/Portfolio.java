@@ -9,12 +9,12 @@ public class Portfolio {
 
     public Portfolio() {}
 
-    public double evaluate(Bank bank, Currency currency) throws MissingExchangeRateException {
+    public Money evaluate(Bank bank, Currency currency) throws MissingExchangeRateException {
         Money total = new Money(0, currency);
         for(Money money: moneys) {
             total = new Money(bank.convert(money, currency).amount() + total.amount(), currency);
         }
-        return total.amount();
+        return total;
     }
 
     public void add(Money money) {

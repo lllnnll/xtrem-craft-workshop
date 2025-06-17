@@ -19,8 +19,8 @@ public class PortfolioTest {
         Portfolio portfolio = new Portfolio();
         portfolio.add(new Money(5, USD));
         Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
-        double value = portfolio.evaluate(bank, USD);
-        assertThat(value)
+        Money value = portfolio.evaluate(bank, USD);
+        assertThat(value.amount())
                 .isEqualTo(5);
     }
 
@@ -36,8 +36,8 @@ public class PortfolioTest {
         portfolio.add(new Money(5,USD));
         portfolio.add(new Money(10, USD));
         Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
-        double value = portfolio.evaluate(bank, USD);
-        assertThat(value)
+        Money value = portfolio.evaluate(bank, USD);
+        assertThat(value.amount())
                 .isEqualTo(15);
     }
     /*
@@ -53,8 +53,8 @@ public class PortfolioTest {
         portfolio.add(new Money(5, USD));
         portfolio.add(new Money(10, EUR));
         Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
-        double value = portfolio.evaluate(bank, USD);
-        assertThat(value)
+        Money value = portfolio.evaluate(bank, USD);
+        assertThat(value.amount())
                 .isEqualTo(17);
     }
     /*
@@ -72,8 +72,8 @@ public class PortfolioTest {
         portfolio.add(new Money(10, EUR));
         Bank bank = Bank.withExchangeRate(EUR, KRW, 1344);
         bank.addExchangeRate(USD, KRW, 1100);
-        double value = portfolio.evaluate(bank, KRW);
-        assertThat(value)
+        Money value = portfolio.evaluate(bank, KRW);
+        assertThat(value.amount())
                 .isEqualTo(18940);
     }
     /*
