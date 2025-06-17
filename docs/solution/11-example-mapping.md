@@ -40,6 +40,37 @@ I want to convert a given amount in currency into another currency
 So it can be used to evaluate client portfolios
 ```
 
+### Bank can convert to the same currency without exchange rate
+```gherkin
+Given a bank with pivot currency EUR
+    And 10 EUR
+When I convert to EUR
+Then I get 10 EUR
+```
 
+### Bank can convert his pivot currency to the exchange rate
+```gherkin
+Given a bank with pivot currency EUR 
+    And exhange rate to USD equals to 1.2 
+    And 10 EUR
+When I convert my EUR to USD
+Then I get 12 USD
+```
 
+### Bank can convert the exchange rate to his pivot currency
+```gherkin
+Given a bank with pivot currency EUR 
+    And exhange rate to USD equals to 1.2
+    And 12 USD
+When I convert my USD to EUR
+Then I get 10 USD
+```
 
+### Bank can not convert the exchange rate to pivot currency not in the bank 
+```gherkin
+Given a bank with pivot currency USD 
+    And exhange rate to EUR equals to 0.82
+    And 10 USD
+When I convert my USD to KRW
+Then I get Exception
+```
