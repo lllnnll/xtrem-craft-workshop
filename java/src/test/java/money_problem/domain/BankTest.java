@@ -13,7 +13,7 @@ class BankTest {
     @Test
     void convert_eur_to_usd_returns_double() throws MissingExchangeRateException {
         // Arrange
-        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
 
         // Act
         Money amount = bank.convert(new Money(10, EUR), USD);
@@ -24,7 +24,7 @@ class BankTest {
 
     @Test
     void convert_eur_to_eur_returns_same_value() throws MissingExchangeRateException {
-        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
         Money convert = bank.convert(new Money(10, EUR), EUR);
         assertThat(convert)
                 .isEqualTo(new Money(10, EUR));
@@ -32,7 +32,7 @@ class BankTest {
 
     @Test
     void convert_throws_exception_on_missing_exchange_rate() throws MissingExchangeRateException {
-        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
         // assert
         ThrowableAssert.ThrowingCallable action = () -> bank.convert(new Money(10, EUR), KRW);
         assertThatThrownBy(action)
@@ -43,8 +43,8 @@ class BankTest {
     @Test
     void convert_with_different_exchange_rates_returns_different_floats() throws MissingExchangeRateException {
         // Arrange
-        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
-        Bank bank2 = Bank.withExchangeRate(EUR, USD, 1.3);
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
+        Bank bank2 = BankBuilder.aEuropeanBank().withExchangeRate(1.3,USD).build();
         // Act
         Money convert = bank.convert(new Money(10,EUR),USD);
         Money convert2 = bank2.convert(new Money(10,EUR),USD);
@@ -59,7 +59,7 @@ class BankTest {
     @Test
     void convert_with_same_currency() throws SameCurrencyException, MissingExchangeRateException {
         // Arrange
-        Bank bank = Bank.withExchangeRate(EUR, USD, 1.2);
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
         // Assert
         ThrowableAssert.ThrowingCallable action = () -> bank.addExchangeRate(EUR, EUR, 0.8);;
         assertThatThrownBy(action)
