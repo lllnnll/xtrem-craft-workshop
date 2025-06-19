@@ -57,7 +57,6 @@ public final class Bank {
 
         if (exchangeRates.containsKey(sourceToPivot) && exchangeRates.containsKey(pivotToTarget)) {
             double toPivot = amount * exchangeRates.get(sourceToPivot);
-
             return Math.round(toPivot * exchangeRates.get(pivotToTarget) * 100.0) / 100.0;
         }
 

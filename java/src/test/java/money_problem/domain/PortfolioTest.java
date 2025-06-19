@@ -95,4 +95,17 @@ public class PortfolioTest {
                 .isInstanceOf(MissingExchangeRateException.class)
                 .hasMessage("EUR->KRW");
     }
+
+    @Test
+    void test_evaluate() throws MissingExchangeRateException, InvalidRateException{
+        Portfolio portfolio = new Portfolio();
+        portfolio.add(new Money(5.6, EUR));
+        portfolio.add(new Money(10, USD));
+        portfolio.add(new Money(5.42, USD));
+        portfolio.add(new Money(1200, KRW));
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).withExchangeRate(1344,KRW).build();
+        Money value = portfolio.evaluate(bank, EUR);
+        assertThat(value.amount())
+                .isEqualTo(19.34);
+    }
 }
