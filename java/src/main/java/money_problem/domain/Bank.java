@@ -16,13 +16,6 @@ public final class Bank {
         this.pivotCurrency = pivotCurrency;
     }
 
-    public static Bank withExchangeRate(Currency currencySource, Currency currencyTarget, double rate) throws InvalidRateException{
-        var bank = new Bank(new HashMap<>());
-        bank.addExchangeRate(currencyTarget, rate);
-
-        return bank;
-    }
-
     public static Bank withExchangeRate(Currency currencySource, Currency currencyTarget, double rate, Currency pivotCurrency) throws InvalidRateException{
         var bank = new Bank(new HashMap<>(), pivotCurrency);
         bank.addExchangeRate(currencyTarget, rate);
