@@ -8,8 +8,13 @@ public class BankBuilder {
     private Currency pivotCurrency;
     private Map<Currency, Double> exchangeRates = new HashMap<>();
 
+    public BankBuilder(Currency pivotCurrency) {
+        this.pivotCurrency = pivotCurrency;
+        this.exchangeRates.put(Currency.USD,1.2);
+    }
+
     public static BankBuilder aBank(){
-        return new BankBuilder();
+        return new BankBuilder(Currency.EUR);
     }
 
     public BankBuilder withPivotCurrency(Currency pivotCurrency){

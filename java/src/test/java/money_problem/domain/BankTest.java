@@ -66,4 +66,14 @@ class BankTest {
                 .isInstanceOf(SameCurrencyException.class)
                 .hasMessage("EUR->EUR");
     }
+
+    @Test
+    void convert_to_same_currency_without_exchangeRate() throws MissingExchangeRateException{
+        Bank bank = BankBuilder.aEuropeanBank().build();
+        Money convert = bank.convert(new Money(10, EUR), EUR);
+        assertThat(convert)
+                .isEqualTo(new Money(10, EUR));
+    }
+
+
 }
