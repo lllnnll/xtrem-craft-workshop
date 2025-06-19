@@ -76,4 +76,27 @@ class BankTest {
     }
 
 
+
+    @Test
+    void convert_currency_to_exchange_rate() throws MissingExchangeRateException {
+        // Arrange
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
+        // Act
+        Money convert = bank.convert(new Money(10, EUR),USD);
+        // Assert
+        assertThat(convert)
+                .isEqualTo(new Money(12, USD));
+    }
+
+//    @Test
+//    void convert_to_pivot_and_back() throws MissingExchangeRateException {
+//        // Arrange
+//        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
+//        // Act
+//        Money convert = bank.convert(new Money(10, EUR),USD);
+//        Money back = bank.convert(convert, EUR);
+//        // Assert
+//        assertThat(back)
+//                .isEqualTo(new Money(10, EUR));
+//    }
 }
