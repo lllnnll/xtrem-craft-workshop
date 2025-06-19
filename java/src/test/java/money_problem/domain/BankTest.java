@@ -109,4 +109,17 @@ class BankTest {
                 .isInstanceOf(InvalidRateException.class)
                 .hasMessage("0.0 Cannot convert");
     }
+ @Test
+    void convert_to_pivot() throws MissingExchangeRateException, InvalidRateException {
+        // Arrange
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
+        // Act
+        Money convert = bank.convert(new Money(12, USD), EUR);
+        // Assert
+        assertThat(convert)
+                .isEqualTo(new Money(10, EUR));
+    }
+
+    @Test
+
 }

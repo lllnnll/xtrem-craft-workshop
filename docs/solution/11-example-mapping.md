@@ -68,7 +68,7 @@ Given a bank with pivot currency EUR
     And exhange rate to USD equals to 1.2
     And 12 USD
 When I convert my USD to EUR
-Then I get 10 USD
+Then I get 10 EUR
 ```
 
 ### Bank converts the exchange rate to his pivot currency then back to his exchange rate
