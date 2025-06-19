@@ -8,6 +8,7 @@
 - mob programming
 - Mutation testing
 - Data Builder
+- Example Mapping
 
 ## Surpris
 
