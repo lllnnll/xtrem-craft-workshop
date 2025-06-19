@@ -120,6 +120,5 @@ class BankTest {
                 .isEqualTo(new Money(10, EUR));
     }
 
-    @Test
 
 }
