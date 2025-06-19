@@ -36,28 +36,29 @@ public final class Bank {
         }
 
         if (currencySource == currencyTarget) {
-            return amount;
+            return Math.round(amount * 100.0) / 100.0;
         }
 
         String directKey = currencySource + "->" + currencyTarget;
         if (exchangeRates.containsKey(directKey)) {
-            return amount * exchangeRates.get(directKey);
+            return Math.round(amount * exchangeRates.get(directKey) * 100.0) / 100.0;
         }
 
         String sourceToPivot = currencySource + "->" + pivotCurrency;
         String pivotToTarget = pivotCurrency + "->" + currencyTarget;
 
         if (currencySource == pivotCurrency && exchangeRates.containsKey(pivotToTarget)) {
-            return amount * exchangeRates.get(pivotToTarget);
+            return Math.round(amount * exchangeRates.get(pivotToTarget) * exchangeRates.get(directKey) * 100.0) / 100.0;
         }
 
         if (currencyTarget == pivotCurrency && exchangeRates.containsKey(sourceToPivot)) {
-            return amount * exchangeRates.get(sourceToPivot);
+            return Math.round(amount * exchangeRates.get(sourceToPivot) * exchangeRates.get(directKey) * 100.0) / 100.0;
         }
 
         if (exchangeRates.containsKey(sourceToPivot) && exchangeRates.containsKey(pivotToTarget)) {
             double toPivot = amount * exchangeRates.get(sourceToPivot);
-            return toPivot * exchangeRates.get(pivotToTarget);
+
+            return Math.round(toPivot * exchangeRates.get(pivotToTarget) * 100.0) / 100.0;
         }
 
         throw new MissingExchangeRateException(currencySource, currencyTarget);

@@ -135,13 +135,24 @@ class BankTest {
     Then I should receive 10 EUR
     */
      @Test
-        void convert_to_pivot() throws MissingExchangeRateException, InvalidRateException {
-            // Arrange
-            Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
-            // Act
-            Money convert = bank.convert(new Money(12, USD), EUR);
-            // Assert
-            assertThat(convert)
-                    .isEqualTo(new Money(10, EUR));
+    void convert_to_pivot() throws MissingExchangeRateException, InvalidRateException {
+        // Arrange
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
+        // Act
+        Money convert = bank.convert(new Money(12, USD), EUR);
+        // Assert
+        assertThat(convert)
+                .isEqualTo(new Money(10, EUR));
+    }
+
+    @Test
+    void convert_and_round() throws MissingExchangeRateException, InvalidRateException{
+        // Arrange
+        Bank bank = BankBuilder.aBank().withPivotCurrency(KRW).withExchangeRate(0.00073,EUR).build();
+        // Act
+        Money convert = bank.convert(new Money(1248, KRW), EUR);
+        // Assert
+        assertThat(convert)
+                .isEqualTo(new Money(0.91, EUR));
     }
 }
