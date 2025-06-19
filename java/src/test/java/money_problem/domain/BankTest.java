@@ -36,7 +36,7 @@ class BankTest {
 
     /*
     Given a Bank with exchange rate of 1.2 from EUR to USD
-    When I try to convert 10 EUR to KRW
+    When I convert 10 EUR to KRW
     Then I should receive an exception for missing exchange rate "EUR->KRW"
      */
     @Test
@@ -65,7 +65,7 @@ class BankTest {
 
     /*
     Given a Bank
-    When I try to add an exchange rate from EUR to EUR
+    When I add an exchange rate from EUR to EUR
     Then I should receive a SameCurrencyException with message "EUR->EUR"
      */
     @Test
@@ -117,7 +117,7 @@ class BankTest {
 
     /*
     Given a Bank with exchange rate of 1.2 from EUR to USD
-    When I try to add an exchange rate of 0 from KRW
+    When I add an exchange rate of 0 from KRW
     Then I should receive an InvalidRateException with message "0.0 Cannot convert"
      */
     @Test
