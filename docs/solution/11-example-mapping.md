@@ -1,7 +1,8 @@
 # Example Mapping
 
 ## Format de restitution
-*(rappel, pour chaque US)*
+
+_(rappel, pour chaque US)_
 
 ```markdown
 ## Titre de l'US (post-it jaunes)
@@ -26,6 +27,7 @@ So that I can express exchange rates based on it
 ```
 
 ## Story 2: Add an exchange rate
+
 ```gherkin
 As a Foreign Exchange Expert
 I want to add/update exchange rates by specifying: a multiplier rate and a currency
@@ -40,7 +42,8 @@ I want to convert a given amount in currency into another currency
 So it can be used to evaluate client portfolios
 ```
 
-### Bank can convert to the same currency without exchange rate
+### Bank converts to the same currency without exchange rate
+
 ```gherkin
 Given a bank with pivot currency EUR
     And 10 EUR
@@ -48,27 +51,30 @@ When I convert to EUR
 Then I get 10 EUR
 ```
 
-### Bank can convert his pivot currency to the exchange rate by multiplying
+### Bank converts his pivot currency to the exchange rate by multiplying
+
 ```gherkin
-Given a bank with pivot currency EUR 
-    And exhange rate to USD equals to 1.2 
+Given a bank with pivot currency EUR
+    And exhange rate to USD equals to 1.2
     And 10 EUR
 When I convert my EUR to USD
 Then I get 12 USD
 ```
 
-### Bank can convert the exchange rate to his pivot currency by dividing
+### Bank converts the exchange rate to his pivot currency by dividing
+
 ```gherkin
-Given a bank with pivot currency EUR 
+Given a bank with pivot currency EUR
     And exhange rate to USD equals to 1.2
     And 12 USD
 When I convert my USD to EUR
 Then I get 10 USD
 ```
 
-### Bank can convert the exchange rate to his pivot currency then back to his exchange rate
+### Bank converts the exchange rate to his pivot currency then back to his exchange rate
+
 ```gherkin
-Given a bank with pivot currency EUR 
+Given a bank with pivot currency EUR
     And exhange rate to USD equals to 1.2
     And 10 EUR
 When I convert my EUR to USD
@@ -76,7 +82,8 @@ When I convert my EUR to USD
 Then I get 10 EUR
 ```
 
-### Bank can convert the exchangre rate but the client give less than the avergae amount
+### Bank converts the exchange rate but the client give less than the avergae amount
+
 ```gherkin
 Given a bank with pivot currency EUR
     And exhange rate to KRW equals to 1344
@@ -86,7 +93,8 @@ When I convert my KRW to EUR
 Then I get Exception
 ```
 
-### Bank can convert the exchangre rate but the client give more or equals than the avergae amount
+### Bank converts the exchangre rate but the client give more or equals than the avergae amount
+
 ```gherkin
 Given a bank with pivot currency EUR
     And exhange rate to KRW equals to 1344
@@ -96,7 +104,8 @@ When I convert my KRW to EUR
 Then I get 0,01
 ```
 
-### Bank can convert the exchange rate to his pivot currency and round the result to the inferior number
+### Bank converts the exchange rate to his pivot currency and round the result to the inferior number
+
 ```gherkin
 Given a bank with pivot currency KRW
     And exhange rate to EUR equals to 0.00073
@@ -105,7 +114,8 @@ When I convert my KRW to EUR
 Then I get 0,91 EUR rounded of 0,91104 EUR
 ```
 
-### Bank can convert the exchange rate to his exchange rate directly
+### Bank converts the exchange rate to his exchange rate directly
+
 ```gherkin
 Given a bank with pivot currency KRW
     And exhange rate to EUR equals to 0,00073
@@ -116,9 +126,10 @@ When I convert my KRW to EUR
 Then I get 1248 KRW
 ```
 
-### Bank can not convert the exchange rate to pivot currency not in the bank
+### Bank does not convert the exchange rate to pivot currency not in the bank
+
 ```gherkin
-Given a bank with pivot currency USD 
+Given a bank with pivot currency USD
     And exhange rate to EUR equals to 0.82
     And 10 USD
 When I convert my USD to KRW
