@@ -7,10 +7,6 @@ public final class Bank {
     private final Map<String, Double> exchangeRates;
     private Currency pivotCurrency;
 
-    private Bank(Map<String, Double> exchangeRates) {
-        this.exchangeRates = exchangeRates;
-    }
-
     private Bank(Map<String, Double> exchangeRates, Currency pivotCurrency) {
         this.exchangeRates = exchangeRates;
         this.pivotCurrency = pivotCurrency;
