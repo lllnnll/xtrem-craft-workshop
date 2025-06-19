@@ -27,12 +27,12 @@ public class BankBuilder {
         return this;
     }
 
-    public Bank build(){
+    public Bank build() throws InvalidRateException{
         Currency currency = (Currency)this.exchangeRates.keySet().toArray()[0];
-        Bank bank = Bank.withExchangeRate(this.pivotCurrency, currency, this.exchangeRates.get(currency));
+        Bank bank = Bank.withExchangeRate(this.pivotCurrency, currency, this.exchangeRates.get(currency), pivotCurrency);
         for(Currency cur: this.exchangeRates.keySet()){
             if (cur != currency){
-                bank.addExchangeRate(this.pivotCurrency, cur, this.exchangeRates.get(cur));
+                bank.addExchangeRate(cur, this.exchangeRates.get(cur));
             }
         }
         return bank;

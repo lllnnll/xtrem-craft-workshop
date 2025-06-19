@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class BankTest {
 
     @Test
-    void convert_eur_to_usd_returns_double() throws MissingExchangeRateException {
+    void convert_eur_to_usd_returns_double() throws MissingExchangeRateException, InvalidRateException {
         // Arrange
         Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
 
@@ -23,7 +23,7 @@ class BankTest {
     }
 
     @Test
-    void convert_eur_to_eur_returns_same_value() throws MissingExchangeRateException {
+    void convert_eur_to_eur_returns_same_value() throws MissingExchangeRateException, InvalidRateException {
         Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
         Money convert = bank.convert(new Money(10, EUR), EUR);
         assertThat(convert)
@@ -31,7 +31,7 @@ class BankTest {
     }
 
     @Test
-    void convert_throws_exception_on_missing_exchange_rate() throws MissingExchangeRateException {
+    void convert_throws_exception_on_missing_exchange_rate() throws InvalidRateException {
         Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
         // assert
         ThrowableAssert.ThrowingCallable action = () -> bank.convert(new Money(10, EUR), KRW);
@@ -41,7 +41,7 @@ class BankTest {
     }
 
     @Test
-    void convert_with_different_exchange_rates_returns_different_floats() throws MissingExchangeRateException {
+    void convert_with_different_exchange_rates_returns_different_floats() throws MissingExchangeRateException, InvalidRateException {
         // Arrange
         Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
         Bank bank2 = BankBuilder.aEuropeanBank().withExchangeRate(1.3,USD).build();
@@ -57,18 +57,18 @@ class BankTest {
     }
 
     @Test
-    void convert_with_same_currency() throws SameCurrencyException, MissingExchangeRateException {
+    void convert_with_same_currency() throws SameCurrencyException, InvalidRateException {
         // Arrange
         Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
         // Assert
-        ThrowableAssert.ThrowingCallable action = () -> bank.addExchangeRate(EUR, EUR, 0.8);;
+        ThrowableAssert.ThrowingCallable action = () -> bank.addExchangeRate(EUR, 0.8);;
         assertThatThrownBy(action)
                 .isInstanceOf(SameCurrencyException.class)
                 .hasMessage("EUR->EUR");
     }
 
     @Test
-    void convert_to_same_currency_without_exchangeRate() throws MissingExchangeRateException{
+    void convert_to_same_currency_without_exchangeRate() throws MissingExchangeRateException, InvalidRateException{
         Bank bank = BankBuilder.aEuropeanBank().build();
         Money convert = bank.convert(new Money(10, EUR), EUR);
         assertThat(convert)
@@ -76,9 +76,8 @@ class BankTest {
     }
 
 
-
     @Test
-    void convert_currency_to_exchange_rate() throws MissingExchangeRateException {
+    void convert_currency_to_exchange_rate() throws MissingExchangeRateException, InvalidRateException {
         // Arrange
         Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
         // Act
@@ -88,15 +87,26 @@ class BankTest {
                 .isEqualTo(new Money(12, USD));
     }
 
-//    @Test
-//    void convert_to_pivot_and_back() throws MissingExchangeRateException {
-//        // Arrange
-//        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
-//        // Act
-//        Money convert = bank.convert(new Money(10, EUR),USD);
-//        Money back = bank.convert(convert, EUR);
-//        // Assert
-//        assertThat(back)
-//                .isEqualTo(new Money(10, EUR));
-//    }
+    @Test
+    void convert_to_pivot_and_back() throws MissingExchangeRateException, InvalidRateException {
+        // Arrange
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
+        // Act
+        Money convert = bank.convert(new Money(10, EUR),USD);
+        Money back = bank.convert(convert, EUR);
+        // Assert
+        assertThat(back)
+                .isEqualTo(new Money(10, EUR));
+    }
+
+    @Test
+    void convert_to_rate_with_zero() throws InvalidRateException {
+        // Arrange
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2,USD).build();
+        // Assert
+        ThrowableAssert.ThrowingCallable action = () -> bank.addExchangeRate(KRW, 0);;
+        assertThatThrownBy(action)
+                .isInstanceOf(InvalidRateException.class)
+                .hasMessage("0.0 Cannot convert");
+    }
 }

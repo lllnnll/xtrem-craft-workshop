@@ -15,7 +15,7 @@ public class PortfolioTest {
     Then I should receive the evaluated 5 USD
     */
     @Test
-    void test_evaluate_portfolio() throws MissingExchangeRateException {
+    void test_evaluate_portfolio() throws MissingExchangeRateException, InvalidRateException {
         Portfolio portfolio = new Portfolio();
         portfolio.add(new Money(5, USD));
         Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1.2, USD).build();
@@ -31,7 +31,7 @@ public class PortfolioTest {
     Then I should receive the evaluated 15 USD
     */
     @Test
-    void test_evaluate_portfolio_with_multiple_usd() throws MissingExchangeRateException {
+    void test_evaluate_portfolio_with_multiple_usd() throws MissingExchangeRateException, InvalidRateException {
         Portfolio portfolio = new Portfolio();
         portfolio.add(new Money(5,USD));
         portfolio.add(new Money(10, USD));
@@ -48,7 +48,7 @@ public class PortfolioTest {
     Then I should receive the evaluated 17USD
      */
     @Test
-    void test_evaluate_portfolio_with_multiple_currencies() throws MissingExchangeRateException {
+    void test_evaluate_portfolio_with_multiple_currencies() throws MissingExchangeRateException, InvalidRateException {
         Portfolio portfolio = new Portfolio();
         portfolio.add(new Money(5, USD));
         portfolio.add(new Money(10, EUR));
@@ -66,15 +66,14 @@ public class PortfolioTest {
         Then I should receive the evaluated 18940 KRW
      */
     @Test
-    void test_evaluate_portfolio_with_multiple_currencies_and_different_exchange_rates() throws MissingExchangeRateException {
+    void test_evaluate_portfolio_with_multiple_currencies_and_different_exchange_rates() throws MissingExchangeRateException, InvalidRateException {
         Portfolio portfolio = new Portfolio();
         portfolio.add(new Money(5, USD));
         portfolio.add(new Money(10, EUR));
-        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1344,KRW).build();
-        bank.addExchangeRate(USD, KRW, 1100);
+        Bank bank = BankBuilder.aEuropeanBank().withExchangeRate(1344,KRW).withExchangeRate(1.2,USD).build();
         Money value = portfolio.evaluate(bank, KRW);
         assertThat(value.amount())
-                .isEqualTo(18940);
+                .isEqualTo(19040);
     }
     /*
     Given a portfolio containing 5 USD
@@ -85,7 +84,7 @@ public class PortfolioTest {
     Then error: missing exchange rate
      */
     @Test
-    void test_evaluate_portfolio_with_missing_exchange_rate() throws MissingExchangeRateException {
+    void test_evaluate_portfolio_with_missing_exchange_rate() throws InvalidRateException {
         Portfolio portfolio = new Portfolio();
         portfolio.add(new Money(5, EUR));
         portfolio.add(new Money(10, EUR));
